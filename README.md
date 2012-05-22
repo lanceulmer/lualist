@@ -1,85 +1,88 @@
-# jaylist
-a simple wrapper for javascript's built-in hash storage. 
-Much of the functionality was inspired by Python's dictionary.
+# lualist
+A simple wrapper for lua's built-in tables.
+lualist is a complete port of [Jaylist](https://github.com/benbscholz/jaylist) in lua.
+Jaylist's functionality was inspired by Python's dictionary.
 
 ## demo
 
-		// let's create a list
-		var jaylist = list();
-		
-		// and add some items
-		jaylist.add("here", "strings");
-		jaylist.add("there", 1638423);
-		jaylist.add("these", [1,2,3,4,5]);
-		
-		// let's view the keys in the list
-		// -> ["here", "there", "these"]
-		jaylist.keys();
+        local list = require('lualist')
 
-		// let's view the values in the list
-		// -> ["strings", 1638423, [1,2,3,4,5]]
-		jaylist.values();
+        local lualist = list()
 
-		// let's remove an item
-		jaylist.remove("here");
+        -- and add some items
+        lualist.add("here", "strings")
+        lualist.add("there", 1638423)
+        lualist.add("these", {1,2,3,4,5})
 
-		// trying to retrieve an item that doesn't exist yields undefined
-		// -> undefined
-		jaylist.get("here");
+        -- let's view the keys in the list
+        -- -> ["here", "there", "these"]
+        for k,v in pairs(lualist.keys()) do print(v) end
 
-		// -> 1638423
-		jaylist.get("there");
+        -- let's view the values in the list
+        -- -> ["strings", 1638423, [1,2,3,4,5]]
+        for k,v in pairs(lualist.values()) do print(v) end
 
-		// deep copy a list
-		var beelist = jaylist.copy();
+        -- let's remove an item
+        lualist.remove("here")
 
-		// list equality
-		// -> true
-		jaylist.isEqual(beelist);
+        -- trying to retrieve an item that doesn't exist yields undefined
+        -- -> undefined
+        print(lualist.get("here"))
 
-		// empty a list
-		jaylist.clear();
+        -- -> 1638423
+        print(lualist.get("there"))
 
-		// iteration with a callback 
-		beelist.each(function(key){console.log(key);});
+        -- deep copy a list
+        local beelist = lualist.copy()
 
-		// iteration with a loop
-		var item;
-		while (item = beelist.next()) {
-				console.log(item);
-		}		
-		
-		// update a list with the contents of another
-		jaylist.update(beelist);
+        -- list equality
+        -- -> true
+        print(lualist.isEqual(beelist))
+
+        -- empty a list
+        lualist.clear()
+
+        -- iteration with a callback
+        beelist.each(function(key) print(key) end)
+
+        -- iteration with a loop
+        local item = beelist.next()
+        while item do
+            print(item)
+            item = beelist.next()
+        end
+
+        -- update a list with the contents of another
+        lualist.update(beelist)
 
 ## Functions:
 ###Create the list:
 
-    var jaylist = list(); 
+    local lualist = list()
 
-   
+
 ###Add a value to the list:
 
 #### add(key, value)
 --Insert an object into the list, overwriting any value already assigned to the key. Returns the value upon successful addition.
 
-    jaylist.add("key", value);
+    lualist.add("key", value)
 
-   
+
 ###Get the value from the list:
 
 #### get(key)
 --Returns the value associated with key, undefined if the key has not been entered into the list.
 
-    var val = jaylist.get("key"); 
+    local val = lualist.get("key")
 
-  
+
 ###Remove the value from the list:
 
 #### remove(key)
 --Removes the object from the list. Returns undefined if no value is assigned to the key. Upon successful removal, it returns the value removed. A list or array of keys may also be passed.
 
-    jaylist.remove("key");
+    lualist.remove("key")
 
 
 ###Get the keys in the list:
@@ -87,7 +90,7 @@ Much of the functionality was inspired by Python's dictionary.
 #### keys()
 --Returns an array of the keys in the list.
 
-    var keys = jaylist.keys();
+    local keys = lualist.keys()
 
 
 ###Get the values in the list:
@@ -95,7 +98,7 @@ Much of the functionality was inspired by Python's dictionary.
 #### values()
 --Returns an array of the values in the list.
 
-    var values = jaylist.values();
+    local values = lualist.values()
 
 
 ###Get the items in the list:
@@ -103,15 +106,15 @@ Much of the functionality was inspired by Python's dictionary.
 #### items()
 --Returns an array of key-value pairs. [[key, value]]
 
-    var items = jaylist.items();
+    local items = lualist.items()
 
 
 ###Get the length of the list:
 
-#### len() 
+#### len()
 --Returns the number of elements in the list, 0 when empty.
 
-    var len = jaylist.len();    
+    len = lualist.len()
 
 
 ###Clear the list:
@@ -119,23 +122,23 @@ Much of the functionality was inspired by Python's dictionary.
 #### clear()
 --Removes all the items from the list.
 
-    jaylist.clear();
+    lualist.clear()
 
 
 ###Check if the list contains the key:
-    
+
 #### hasKey(key)
 -- Returns true if the list contains the key and false otherwise.
 
-    jaylist.hasKey(key);
+    lualist.hasKey(key)
 
 
 ###Update a list with another list:
-    
+
 #### update(list)
 -- Adds the entries of the input list to the list.
 
-    jaylist.update(somelist);
+    lualist.update(somelist)
 
 
 ###Deep copy a list:
@@ -143,7 +146,7 @@ Much of the functionality was inspired by Python's dictionary.
 #### copy()
 -- Returns a deep copy of the list.
 
-    var newlist = jaylist.copy();
+    local newlist = lualist.copy()
 
 
 ###Iterate through a list:
@@ -151,7 +154,7 @@ Much of the functionality was inspired by Python's dictionary.
 #### each(callback)
 -- Iterates through each entry in the list, calling callback with parameter key for each value.
 
-    jaylist.each(function(key){somefunction(key);});
+    lualist.each(function(key)somefunction(key)end)
 
 
 ###Iterate through a list:
@@ -159,7 +162,7 @@ Much of the functionality was inspired by Python's dictionary.
 #### next()
 -- Iterates through each entry in the list, returning a key on each call. When the iteration is complete, next() returns undefined & the iteration can begin again.
 
-    while(jaylist.next()) {...}
+    while(lualist.next()) {...}
 
 
 ###Return an object representation of the list:
@@ -167,14 +170,14 @@ Much of the functionality was inspired by Python's dictionary.
 #### object()
 -- Returns the list as an object of key-value pairs.
 
-    var obj = jaylist.object();
+    local obj = lualist.object()
 
 
 ###Check if two lists are equal:
-	
+
 #### isEqual(list)
 -- Returns true if the lists are equivalent and false otherwise.
 
-    jaylist.isEqual(alist);
+    lualist.isEqual(alist)
 
 
