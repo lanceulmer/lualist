@@ -1,0 +1,259 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>Lualist</title>
+  <meta name="description" content="lualist is a very simple key-value list. (ported from jaylist)">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Lualist</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">lualist is a very simple key-value list. (ported from jaylist)</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/lanceulmer/lualist/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/lanceulmer/lualist/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/lanceulmer/lualist" class="code">View Lualist on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h1>lualist</h1>
+
+<p>A simple wrapper for lua's built-in tables.
+lualist is a complete port of <a href="https://github.com/benbscholz/jaylist">Jaylist</a> in lua.
+Jaylist's functionality was inspired by Python's dictionary.</p>
+
+<h2>demo</h2>
+
+<pre><code>    local list = require('lualist')
+
+    local lualist = list()
+
+    -- and add some items
+    lualist.add("here", "strings")
+    lualist.add("there", 1638423)
+    lualist.add("these", {1,2,3,4,5})
+
+    -- let's view the keys in the list
+    -- -&gt; ["here", "there", "these"]
+    for k,v in pairs(lualist.keys()) do print(v) end
+
+    -- let's view the values in the list
+    -- -&gt; ["strings", 1638423, [1,2,3,4,5]]
+    for k,v in pairs(lualist.values()) do print(v) end
+
+    -- let's remove an item
+    lualist.remove("here")
+
+    -- trying to retrieve an item that doesn't exist yields undefined
+    -- -&gt; undefined
+    print(lualist.get("here"))
+
+    -- -&gt; 1638423
+    print(lualist.get("there"))
+
+    -- deep copy a list
+    local beelist = lualist.copy()
+
+    -- list equality
+    -- -&gt; true
+    print(lualist.isEqual(beelist))
+
+    -- empty a list
+    lualist.clear()
+
+    -- iteration with a callback
+    beelist.each(function(key) print(key) end)
+
+    -- iteration with a loop
+    local item = beelist.next()
+    while item do
+        print(item)
+        item = beelist.next()
+    end
+
+    -- update a list with the contents of another
+    lualist.update(beelist)
+</code></pre>
+
+<h2>Functions:</h2>
+
+<h3>Create the list:</h3>
+
+<pre><code>local lualist = list()
+</code></pre>
+
+<h3>Add a value to the list:</h3>
+
+<h4>add(key, value)</h4>
+
+<p>--Insert an object into the list, overwriting any value already assigned to the key. Returns the value upon successful addition.</p>
+
+<pre><code>lualist.add("key", value)
+</code></pre>
+
+<h3>Get the value from the list:</h3>
+
+<h4>get(key)</h4>
+
+<p>--Returns the value associated with key, undefined if the key has not been entered into the list.</p>
+
+<pre><code>local val = lualist.get("key")
+</code></pre>
+
+<h3>Remove the value from the list:</h3>
+
+<h4>remove(key)</h4>
+
+<p>--Removes the object from the list. Returns undefined if no value is assigned to the key. Upon successful removal, it returns the value removed. A list or array of keys may also be passed.</p>
+
+<pre><code>lualist.remove("key")
+</code></pre>
+
+<h3>Get the keys in the list:</h3>
+
+<h4>keys()</h4>
+
+<p>--Returns an array of the keys in the list.</p>
+
+<pre><code>local keys = lualist.keys()
+</code></pre>
+
+<h3>Get the values in the list:</h3>
+
+<h4>values()</h4>
+
+<p>--Returns an array of the values in the list.</p>
+
+<pre><code>local values = lualist.values()
+</code></pre>
+
+<h3>Get the items in the list:</h3>
+
+<h4>items()</h4>
+
+<p>--Returns an array of key-value pairs. [[key, value]]</p>
+
+<pre><code>local items = lualist.items()
+</code></pre>
+
+<h3>Get the length of the list:</h3>
+
+<h4>len()</h4>
+
+<p>--Returns the number of elements in the list, 0 when empty.</p>
+
+<pre><code>len = lualist.len()
+</code></pre>
+
+<h3>Clear the list:</h3>
+
+<h4>clear()</h4>
+
+<p>--Removes all the items from the list.</p>
+
+<pre><code>lualist.clear()
+</code></pre>
+
+<h3>Check if the list contains the key:</h3>
+
+<h4>hasKey(key)</h4>
+
+<p>-- Returns true if the list contains the key and false otherwise.</p>
+
+<pre><code>lualist.hasKey(key)
+</code></pre>
+
+<h3>Update a list with another list:</h3>
+
+<h4>update(list)</h4>
+
+<p>-- Adds the entries of the input list to the list.</p>
+
+<pre><code>lualist.update(somelist)
+</code></pre>
+
+<h3>Deep copy a list:</h3>
+
+<h4>copy()</h4>
+
+<p>-- Returns a deep copy of the list.</p>
+
+<pre><code>local newlist = lualist.copy()
+</code></pre>
+
+<h3>Iterate through a list:</h3>
+
+<h4>each(callback)</h4>
+
+<p>-- Iterates through each entry in the list, calling callback with parameter key for each value.</p>
+
+<pre><code>lualist.each(function(key)somefunction(key)end)
+</code></pre>
+
+<h3>Iterate through a list:</h3>
+
+<h4>next()</h4>
+
+<p>-- Iterates through each entry in the list, returning a key on each call. When the iteration is complete, next() returns undefined &amp; the iteration can begin again.</p>
+
+<pre><code>while(lualist.next()) {...}
+</code></pre>
+
+<h3>Return an object representation of the list:</h3>
+
+<h4>object()</h4>
+
+<p>-- Returns the list as an object of key-value pairs.</p>
+
+<pre><code>local obj = lualist.object()
+</code></pre>
+
+<h3>Check if two lists are equal:</h3>
+
+<h4>isEqual(list)</h4>
+
+<p>-- Returns true if the lists are equivalent and false otherwise.</p>
+
+<pre><code>lualist.isEqual(alist)
+</code></pre>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/lanceulmer" class="avatar"><img src="https://secure.gravatar.com/avatar/b65382485c1b2784e6654494564ced2f?s=30&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="48" height="48"/></a> <a href="https://github.com/lanceulmer">lanceulmer</a> maintains <a href="https://github.com/lanceulmer/lualist">Lualist</a></p>
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="http://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/lanceulmer/lualist/tarball/master" class="tar">tar</a><a href="https://github.com/lanceulmer/lualist/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
